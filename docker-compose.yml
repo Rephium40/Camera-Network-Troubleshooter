@@ -1,0 +1,61 @@
+services:
+  influxdb:
+    image: influxdb:2.6
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=cameranet
+      - DOCKER_INFLUXDB_INIT_BUCKET=cameranet-bucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=cameranet-token
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  grafana:
+    image: grafana/grafana:9.3.2
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=cameranet123
+      - GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_CHANGE=true
+    depends_on:
+      - influxdb
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - influxdb
+      - mosquitto
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+
+volumes:
+  redis_data:
+  influxdb_data:
+  mosquitto_data:
+  mosquitto_log:
+  grafana_data:

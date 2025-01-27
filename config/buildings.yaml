@@ -1,0 +1,117 @@
+# Summerhill Apartment Complex - Camera System Configuration
+# Site Survey Date: October 14th, 2024
+# Location: 3630 E Owens Ave, Las Vegas, NV 89110
+
+# Camera Distribution:
+# - 60x Fixed Cameras (LTS CMIP3C42W-28M)
+# - 1x PTZ Camera (PTZIP512X20IR)
+# - 4x Multi-Lens Cameras (LTS CMIP3C8PW-SDL)
+# - 1x License Plate Recognition (LTS CMIP7943WLPR-32R)
+
+buildings:
+  - id: building-01
+    name: "Main Entrance Building"
+    location:
+      latitude: 36.1957
+      longitude: -115.0778
+    cameras:
+      - id: cam-lpr-01
+        name: "Entry Gate LPR"
+        model: "LTS CMIP7943WLPR-32R"
+        rtsp_url: "rtsp://nvr-01/stream1"
+        type: "lpr"
+        resolution: "4MP"
+      - id: cam-ptz-01
+        name: "Central PTZ"
+        model: "PTZIP512X20IR"
+        rtsp_url: "rtsp://nvr-01/stream2"
+        type: "ptz"
+        resolution: "5MP"
+      - id: cam-ml-01
+        name: "Main Parking Overview"
+        model: "LTS CMIP3C8PW-SDL"
+        rtsp_url: "rtsp://nvr-01/stream3"
+        type: "panoramic"
+        resolution: "8MP"
+
+  - id: building-02
+    name: "North Building"
+    cameras:
+      - id: cam-f01
+        name: "Entry Camera"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream4"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-f02
+        name: "Parking View"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream5"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-ml-02
+        name: "Common Area Overview"
+        model: "LTS CMIP3C8PW-SDL"
+        rtsp_url: "rtsp://nvr-01/stream6"
+        type: "panoramic"
+        resolution: "8MP"
+
+  - id: building-03
+    name: "Central Building"
+    cameras:
+      - id: cam-f03
+        name: "Entry Camera"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream7"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-f04
+        name: "Courtyard View"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream8"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-ml-03
+        name: "Pool Area Overview"
+        model: "LTS CMIP3C8PW-SDL"
+        rtsp_url: "rtsp://nvr-01/stream9"
+        type: "panoramic"
+        resolution: "8MP"
+
+  - id: building-04
+    name: "South Building"
+    cameras:
+      - id: cam-f05
+        name: "Entry Camera"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream10"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-f06
+        name: "Parking View"
+        model: "LTS CMIP3C42W-28M"
+        rtsp_url: "rtsp://nvr-01/stream11"
+        type: "fixed"
+        resolution: "4MP"
+      - id: cam-ml-04
+        name: "Common Area Overview"
+        model: "LTS CMIP3C8PW-SDL"
+        rtsp_url: "rtsp://nvr-01/stream12"
+        type: "panoramic"
+        resolution: "8MP"
+
+# Additional fixed cameras distributed across buildings...
+# (Remaining 54 LTS CMIP3C42W-28M cameras follow same pattern)
+
+nvrs:
+  - id: nvr-01
+    name: "Primary NVR"
+    ip: "192.168.1.3"
+    storage: "32TB"
+    camera_count: 33  # First 33 cameras
+
+  - id: nvr-02
+    name: "Secondary NVR"
+    ip: "192.168.1.4"
+    storage: "32TB"
+    camera_count: 33  # Remaining 33 cameras

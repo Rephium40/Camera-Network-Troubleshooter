@@ -1,6 +1,9 @@
+version: '3.8'
+
 services:
   influxdb:
     image: influxdb:2.6
+    container_name: cameranet-influxdb
     ports:
       - "8086:8086"
     volumes:
@@ -36,14 +39,22 @@ services:
 
   backend:
     build: ./backend
+    container_name: cameranet-backend
     ports:
       - "8000:8000"
+    volumes:
+      - ./config:/app/config
+      - ./backend:/app
     env_file:
       - ./backend/.env
+    environment:
+      - DEV_MODE=true
+      - PYTHONPATH=/app
     depends_on:
       - influxdb
       - mosquitto
       - redis
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
